@@ -13,37 +13,37 @@ public class LottoMaxChecker {
         lotoCheck();
     }
 
-    private static final List<ArrayList<String>> bitList = new ArrayList<>();
+    private static final List<ArrayList<String>> betList = new ArrayList<>();
 
     public static void lotoCheck() {
 
-        bitList.add(askStrArrayList("Please input Lotto Result list of 8 number strings", "Invalid Input", "0[1-9]|[1-4][0-9]*", 8));
+        betList.add(askStrArrayList("Please input Lotto Result list of 8 number strings", "Invalid Input", "0[1-9]|[1-4][0-9]*", 8));
 
-        bitList.add(askStrArrayList("Please input bit 1 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
-        bitList.add(askStrArrayList("Please input bit 2 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
-        bitList.add(askStrArrayList("Please input bit 3 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
+        betList.add(askStrArrayList("Please input bet 1 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
+        betList.add(askStrArrayList("Please input bet 2 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
+        betList.add(askStrArrayList("Please input bet 3 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
         System.out.println("----------------------------------------------------------Result");
-        printArray(bitList.get(0), "_");
-        System.out.println("----------------------------------------------------------My Bits");
+        printArray(betList.get(0), "_");
+        System.out.println("----------------------------------------------------------My Bets");
 
-        for (int j = 1; j < bitList.size(); j++) {
-            for (int i = 0; i < bitList.get(0).size(); i++) {
-                if (bitList.get(j).contains(bitList.get(0).get(i))) {
-                    System.out.print(bitList.get(0).get(i));
+        for (int j = 1; j < betList.size(); j++) {
+            for (int i = 0; i < betList.get(0).size(); i++) {
+                if (betList.get(j).contains(betList.get(0).get(i))) {
+                    System.out.print(betList.get(0).get(i));
                     System.out.print("_");
-                    bitList.get(j).remove(bitList.get(0).get(i));
+                    betList.get(j).remove(betList.get(0).get(i));
                 } else {
                     System.out.print("___");
                 }
                 //new marks
-                if (i == bitList.get(0).size() - 2) {
+                if (i == betList.get(0).size() - 2) {
                     System.out.print("***");
                 }
 
             }
             System.out.print("__");
-            for (int i = 0; i < bitList.get(j).size(); i++) {
-                System.out.print(bitList.get(j).get(i));
+            for (int i = 0; i < betList.get(j).size(); i++) {
+                System.out.print(betList.get(j).get(i));
                 System.out.print("_");
             }
             System.out.println();
