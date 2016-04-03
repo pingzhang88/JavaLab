@@ -106,8 +106,8 @@ public class MathCalculator {
      */
     private boolean calculate(MyStack<Character> oStack, MyStack<Integer> iStack) {
 
-        Objects.nonNull(oStack);
-        Objects.nonNull(iStack);
+        Objects.requireNonNull(oStack);
+        Objects.requireNonNull(iStack);
         if (iStack.isEmpty() || oStack.isEmpty()) {
             sopln("There is no operator or operant for calculation.");
             return false;
@@ -174,7 +174,7 @@ public class MathCalculator {
      * operator of oStack regarding
      */
     private boolean hasHighPriority(Character ch, MyStack<Character> oStack) {
-        Objects.nonNull(oStack);
+        Objects.requireNonNull(oStack);
         if (oStack.isEmpty()) {
             return true;
         } else {
@@ -190,7 +190,7 @@ public class MathCalculator {
      * does not exist in the operator HashMap
      */
     private int getPriority(Character ch) {
-        Objects.nonNull(ch);
+        Objects.requireNonNull(ch);
         if (operators.containsKey(ch)) {
             return (int) operators.get(ch);
         } else {
