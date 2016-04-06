@@ -350,7 +350,7 @@ public class NumberList {
     }
 
     /**
-     *
+     * A simplified method for System.out.println method
      * @param obj the Object to be printed
      */
     public static void sopln(Object obj) {
