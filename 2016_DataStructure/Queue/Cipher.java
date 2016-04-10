@@ -7,13 +7,20 @@ import static java.lang.System.out;
  *
  * @author PING ZHANG
  */
+// Store: Store the encoding key list in a static queue.
+// Repeatedly: Use key list repeatedly: take a key from the head and move it from the head to the tail of the queue.
+// Original: Use the original key queue for each task (encode or decode).
+// The Logic to convert each letter: from originChar to newChar
+// 	char newChar = (char) (((int) originChar - (int) base + RANGE + key % RANGE) % RANGE + (int)base);
+// 	char base: 'A' or 'a', depends on the originChar's capitalization.
+// 	int RANGE: (int)('Z'-'A'+1)
+// 	int key: the key retrived from the key queue, negative for decoding.
+// Characters that are not letters remain as they are.
 public class Cipher {
 
     private static final String keyString = "0 -1 1 0 -1000 999 -4 -1 -6 7 -4 5 -2 -3 888 -99999 0";
     private static MyQueue<Integer> keyQueue;
 
-    private static final char ENCODE = '+';
-    private static final char DECODE = '-';
     private static final String UPPER = "upper";
     private static final String LOWER = "lower";
 
@@ -21,7 +28,7 @@ public class Cipher {
      * Initiate a keyQueue and fill it with keys containing in keyString
      */
     private static void fillKeyQueue() {
-        keyQueue = new MyQueue<Integer>();
+        keyQueue = new MyQueue<>();
         String[] array = keyString.split(" ");
         for (String element : array) {
             keyQueue.addToQueue(Integer.parseInt(element));
@@ -35,20 +42,10 @@ public class Cipher {
      * @param ch indicate the operation is encode or decode.
      * @return the key in the head.
      */
-    private static int getKeyAndRotate(char ch) {
-
+    private static int getKeyAndRotate() {
         Integer key = keyQueue.deleteFromQueue();
         keyQueue.addToQueue(key);
-
-        if (ch == ENCODE) {
-            return key;
-        } else if (ch == DECODE) {
-            return key * (-1);
-        } else {
-            sopln("Invalid Key Direction.");
-            return Integer.MIN_VALUE;
-        }
-
+        return key;
     }
 
     /**
@@ -58,7 +55,7 @@ public class Cipher {
      * @return the encoded message.
      */
     public static String encode(String message) {
-        return enDeCode(message, ENCODE);
+        return enDeCode(message, 1);
     }
 
     /**
@@ -68,7 +65,7 @@ public class Cipher {
      * @return the decoded message.
      */
     public static String decode(String message) {
-        return enDeCode(message, DECODE);
+        return enDeCode(message, -1);
     }
 
     /**
@@ -78,7 +75,7 @@ public class Cipher {
      * @param encodeOrDecode indicates the operation is encode or decode.
      * @return the processed message
      */
-    private static String enDeCode(String message, char encodeOrDecode) {
+    private static String enDeCode(String message, int sign) {
 
         fillKeyQueue();
         StringBuilder sb = new StringBuilder();
@@ -88,9 +85,9 @@ public class Cipher {
 
         for (String token : tokens) {
             if (token.matches("[A-Z]")) {
-                token = convert(token, encodeOrDecode, UPPER);
+                token = convert(token, sign, UPPER);
             } else if (token.matches("[a-z]")) {
-                token = convert(token, encodeOrDecode, LOWER);
+                token = convert(token, sign, LOWER);
             }
 //            else {
 //                sopln("Not alphabet, do nothing.");
@@ -110,10 +107,10 @@ public class Cipher {
      * @param capital indicates the token is upper or lower case
      * @return the converted letter
      */
-    private static String convert(String token, char encodeOrDecode, String capital) {
+    private static String convert(String token, int sign, String capital) {
 
         char tokenCh = token.charAt(0);
-        int key = getKeyAndRotate(encodeOrDecode);
+        int key = getKeyAndRotate() * sign;
         char ALPHA_BASE = '\u0000';
         final int RANGE = (int) ('Z' - 'A') + 1;
 
