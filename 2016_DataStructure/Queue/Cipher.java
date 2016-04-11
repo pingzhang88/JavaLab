@@ -7,22 +7,11 @@ import static java.lang.System.out;
  *
  * @author PING ZHANG
  */
-// Store: Store the encoding key list in a static queue.
-// Repeatedly: Use key list repeatedly: take a key from the head and move it from the head to the tail of the queue.
-// Original: Use the original key queue for each task (encode or decode).
-// The Logic to convert each letter: from originChar to newChar
-// 	char newChar = (char) (((int) originChar - (int) base + RANGE + key % RANGE) % RANGE + (int)base);
-// 	char base: 'A' or 'a', depends on the originChar's capitalization.
-// 	int RANGE: (int)('Z'-'A'+1)
-// 	int key: the key retrived from the key queue, negative for decoding.
-// Characters that are not letters remain as they are.
+
 public class Cipher {
 
     private static final String keyString = "0 -1 1 0 -1000 999 -4 -1 -6 7 -4 5 -2 -3 888 -99999 0";
     private static MyQueue<Integer> keyQueue;
-
-    private static final String UPPER = "upper";
-    private static final String LOWER = "lower";
 
     /**
      * Initiate a keyQueue and fill it with keys containing in keyString
@@ -85,9 +74,9 @@ public class Cipher {
 
         for (String token : tokens) {
             if (token.matches("[A-Z]")) {
-                token = convert(token, sign, UPPER);
+                token = convert(token, sign, 'A');
             } else if (token.matches("[a-z]")) {
-                token = convert(token, sign, LOWER);
+                token = convert(token, sign, 'a');
             }
 //            else {
 //                sopln("Not alphabet, do nothing.");
@@ -107,26 +96,12 @@ public class Cipher {
      * @param capital indicates the token is upper or lower case
      * @return the converted letter
      */
-    private static String convert(String token, int sign, String capital) {
+    private static String convert(String token, int sign, char ALPHA_BASE) {
 
         char tokenCh = token.charAt(0);
         int key = getKeyAndRotate() * sign;
-        char ALPHA_BASE = '\u0000';
         final int RANGE = (int) ('Z' - 'A') + 1;
 
-        switch (capital) {
-            case UPPER:
-                ALPHA_BASE = 'A';
-                break;
-            case LOWER:
-                ALPHA_BASE = 'a';
-                break;
-            default:
-                sopln("Invalide input, capital can ONLY be UPPER or LOWER");
-        }
-
-        //For a large key, say 999, or -999 to work, must use "+key%RANGE" instead of "+key"
-        //"+RANGE" works for minus key.
         tokenCh = (char) (((int) tokenCh - (int) ALPHA_BASE + RANGE + key % RANGE) % RANGE + (int) ALPHA_BASE);
 
         return Character.toString(tokenCh);
