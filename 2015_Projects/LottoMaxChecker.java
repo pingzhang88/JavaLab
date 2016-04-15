@@ -1,10 +1,17 @@
-package loto;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A class to check the Lotto Max bets
+ *
  * @author Ping Zhang
  */
 public class LottoMaxChecker {
@@ -17,11 +24,22 @@ public class LottoMaxChecker {
 
     public static void lotoCheck() {
 
-        betList.add(askStrArrayList("Please input Lotto Result list of 8 number strings", "Invalid Input", "0[1-9]|[1-4][0-9]*", 8));
-
-        betList.add(askStrArrayList("Please input bet 1 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
-        betList.add(askStrArrayList("Please input bet 2 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
-        betList.add(askStrArrayList("Please input bet 3 list of 7", "Invalid Input", "0[1-9]|[1-4][0-9]*", 7));
+        File lotoNumbers = new File("lotoNumbers.txt");
+        try {
+            BufferedReader bufferedReader;
+            try (FileReader reader = new FileReader(lotoNumbers)) {
+                bufferedReader = new BufferedReader(reader);
+                String s;
+                while ((s = bufferedReader.readLine()) != null) {
+                    String[] params = s.split(",");
+                    betList.add(new ArrayList<>(Arrays.asList(params)));
+                }
+            }
+            bufferedReader.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LottoMaxChecker.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         System.out.println("----------------------------------------------------------Result");
         printArray(betList.get(0), "_");
         System.out.println("----------------------------------------------------------My Bets");
@@ -57,7 +75,7 @@ public class LottoMaxChecker {
      * containing these number Strings
      *
      * @param S1 e.g. "Please input a integer number list"
-     * @param S2 e.g. "Invalid input, must input a integer number only" 
+     * @param S2 e.g. "Invalid input, must input a integer number only"
      * @param Pattern Integer Pattern: "0|-*[1-9]\\d*"
      * @param size the amount of the numbers
      * @return the ArrayList that contains the numbers
@@ -79,7 +97,7 @@ public class LottoMaxChecker {
     }
 
     /**
-     * 
+     *
      * @param list The List to be printed
      * @param mySeparator The String to separate the list elements
      */
@@ -97,3 +115,4 @@ public class LottoMaxChecker {
     }
 
 }
+
