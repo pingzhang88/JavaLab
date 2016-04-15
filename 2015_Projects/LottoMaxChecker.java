@@ -71,32 +71,6 @@ public class LottoMaxChecker {
     }
 
     /**
-     * Ask for input of numbers list in String format, generates an ArrayList
-     * containing these number Strings
-     *
-     * @param S1 e.g. "Please input a integer number list"
-     * @param S2 e.g. "Invalid input, must input a integer number only"
-     * @param Pattern Integer Pattern: "0|-*[1-9]\\d*"
-     * @param size the amount of the numbers
-     * @return the ArrayList that contains the numbers
-     */
-    public static ArrayList<String> askStrArrayList(String S1, String S2, String Pattern, int size) {
-        Scanner console = new Scanner(System.in);
-        System.out.println(S1);
-
-        ArrayList<String> strList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            if (console.hasNext(Pattern)) {
-                strList.add(console.next());
-            } else {
-                System.out.println(S2);
-                console.next();
-            }
-        }
-        return strList;
-    }
-
-    /**
      *
      * @param list The List to be printed
      * @param mySeparator The String to separate the list elements
